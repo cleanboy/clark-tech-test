@@ -14,6 +14,7 @@ import {
 
 import Container from '../../components/Container';
 import ProductCard from '../../components/Product';
+import LoadingScreen from '../LoadingScreen';
 
 import type { Product } from '../../types/Products';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -23,6 +24,7 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
     const [products, setProducts] = useState<Array<Product>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         getProducts();
@@ -31,18 +33,29 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
     const getProducts = async () => {
         // Normally I would most likely do this inside of a hook or an action if using redux 
         // and store it in state however I thought that was overkill for such a small app.
-        try {
-            const response = await axios.get('https://fakestoreapi.com/products');
+        setIsLoading(true);
 
-            setProducts(response.data);
-        } catch (error) {
-            console.log('error: ', error);
-            // Probably we should show an error message to the user
-        }
+        // I am only putting the setTimout here to show the loading screen as the API responds fairly quickly...
+        setTimeout(async () => {
+            try {
+                const response = await axios.get('https://fakestoreapi.com/products');
+    
+                setProducts(response.data);
+            } catch (error) {
+                console.log('error: ', error);
+                // Probably we should show an error message to the user
+            } finally {
+                setIsLoading(false);
+            }
+        }, 2000);
     }
 
     const handleNavigateToProductDetail = (product: Product) => {
         navigation.navigate('ProductDetail', product);
+    }
+
+    if (isLoading) {
+        return <LoadingScreen />
     }
 
     return (
