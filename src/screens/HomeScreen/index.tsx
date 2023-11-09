@@ -13,6 +13,7 @@ import {
     useToast,
     Text
 } from '@gluestack-ui/themed';
+import { RefreshControl } from 'react-native';
 
 import Container from '../../components/Container';
 import ProductCard from '../../components/Product';
@@ -36,7 +37,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         getProducts();
     }, []);
 
-    const getProducts = async () => {
+    const getProducts = () => {
         // Normally I would most likely do this inside of a hook or an action if using redux 
         // and store it in state however I thought that was overkill for such a small app.
         setIsLoading(true);
@@ -92,7 +93,15 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
 
     return (
         <Container>
-            <ScrollView>
+            <ScrollView
+                // This is not the most elegant solution for this...time is not on my side.
+                refreshControl={
+                    <RefreshControl 
+                        refreshing={isLoading}
+                        onRefresh={getProducts} 
+                    />
+                }
+            >
                 <Input 
                     variant="rounded"
                     size="md"

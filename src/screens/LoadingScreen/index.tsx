@@ -1,12 +1,12 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { Spinner } from '@gluestack-ui/themed';
 
 import Container from '../../components/Container';
 
 const LoadingScreen = () => {
     return (
         <Container>
-            <ActivityIndicator size="large" color="#0c40fa" />
+            <Spinner size="large" color="#0c40fa" />
         </Container>
     )
 }
