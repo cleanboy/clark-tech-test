@@ -16,6 +16,8 @@ import Container from '../../components/Container';
 import ProductCard from '../../components/Product';
 import LoadingScreen from '../LoadingScreen';
 
+import { capitalizeFirstLetter } from '../../helpers/text';
+
 import type { Product } from '../../types/Products';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../Router/types';
@@ -72,28 +74,32 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                     <InputField placeholder="Search..." />
                 </Input>
                 <VStack>
-                    {products.map((product, i) => (
-                        <>
-                            <Pressable
-                                onPress={() => handleNavigateToProductDetail(product)}
-                            >
-                                <ProductCard 
+                    {products.map((product, i) => {
+                        const category = capitalizeFirstLetter(product.category);
+
+                        return (
+                            <>
+                                <Pressable
                                     key={`product-${i}`}
-                                    title={product.title}
-                                    category={product.category}
-                                    price={product.price}
-                                    image={product.image}
-                                    rating={product.rating}
+                                    onPress={() => handleNavigateToProductDetail(product)}
+                                >
+                                    <ProductCard 
+                                        title={product.title}
+                                        category={category}
+                                        price={product.price}
+                                        image={product.image}
+                                        rating={product.rating}
+                                    />
+                                </Pressable>
+                                <Box 
+                                    width="100%"
+                                    height={1}
+                                    backgroundColor="#d4d4d4"
+                                    mb="$3"
                                 />
-                            </Pressable>
-                            <Box 
-                                width="100%"
-                                height={1}
-                                backgroundColor="#d4d4d4"
-                                mb="$3"
-                            />
-                        </> 
-                    ))}
+                            </> 
+                        )
+                    })}
                 </VStack>
             </ScrollView>
         </Container>

@@ -9,6 +9,8 @@ import {
 
 import Container from '../../components/Container';
 
+import { capitalizeFirstLetter } from '../../helpers/text';
+
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../Router/types';
 
@@ -26,6 +28,8 @@ const ProductDetail = ({route}: ProductDetailScreenProps) => {
 
     const { width, height } = Dimensions.get('window');
 
+    const formattedCategory = capitalizeFirstLetter(category);
+
     return (
         <Container>
             <ScrollView>
@@ -38,7 +42,7 @@ const ProductDetail = ({route}: ProductDetailScreenProps) => {
                         resizeMode="contain"
                     />
                     <Text size="xl" bold mt="$3">{title}</Text>
-                    <Text size="lg" bold>Category: {category}</Text>
+                    <Text size="lg" bold>Category: {formattedCategory}</Text>
                     <Text size="lg" bold>Price: &euro;{price}</Text>
                     <Text>Rating: {rating.rate}/5 ({rating.count})</Text>
                     <Text mt="$3">{description}</Text>
