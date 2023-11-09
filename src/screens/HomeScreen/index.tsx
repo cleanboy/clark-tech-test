@@ -66,6 +66,18 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         navigation.navigate('ProductDetail', product);
     }
 
+    const handleproductSearch = (searchTerm: string) => {
+        if (searchTerm === '') {
+            getProducts();
+        } 
+
+        const filteredProducts = products.filter((product) => {
+            return product.title.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+
+        setProducts(filteredProducts);
+    }
+
     if (isLoading) {
         return <LoadingScreen />
     }
@@ -89,7 +101,10 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                     <InputSlot>
                         <InputIcon as={SearchIcon} color="#aaa" size="md" marginLeft={16} />
                     </InputSlot>
-                    <InputField placeholder="Search..." />
+                    <InputField 
+                        onChangeText={handleproductSearch}
+                        placeholder="Search..." 
+                    />
                 </Input>
                 <VStack>
                     {products.map((product, i) => {
