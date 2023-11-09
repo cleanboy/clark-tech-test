@@ -41,6 +41,10 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         }
     }
 
+    const handleNavigateToProductDetail = (product: Product) => {
+        navigation.navigate('ProductDetail', product);
+    }
+
     return (
         <Container>
             <ScrollView>
@@ -58,14 +62,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                     {products.map((product, i) => (
                         <>
                             <Pressable
-                                onPress={() => navigation.navigate('ProductDetail', { 
-                                    title: product.title,
-                                    category: product.category,
-                                    price: product.price,
-                                    image: product.image,
-                                    rating: product.rating,
-                                    description: product.description
-                                })}
+                                onPress={() => handleNavigateToProductDetail(product)}
                             >
                                 <ProductCard 
                                     key={`product-${i}`}
