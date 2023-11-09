@@ -6,7 +6,7 @@ import {
     Image
 } from '@gluestack-ui/themed';
 
-type ProductProps = {
+type ProductCardProps = {
     title: string;
     category: string;
     price: number;
@@ -23,7 +23,7 @@ const ProductCard = ({
     price,
     image,
     rating
-}: ProductProps) => {
+}: ProductCardProps) => {
     const [imageHeight, setImageHeight] = useState<number>(0);
 
     return (

@@ -8,15 +8,20 @@ import {
     SearchIcon,
     VStack,
     ScrollView,
-    Box
+    Box,
+    Pressable
 } from '@gluestack-ui/themed';
 
 import Container from '../../components/Container';
 import ProductCard from '../../components/Product';
 
-import type { Product } from './types';
+import type { Product } from '../../types/Products';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../Router/types';
 
-const HomeScreen = () => {
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const HomeScreen = ({navigation}: HomeScreenProps) => {
     const [products, setProducts] = useState<Array<Product>>([]);
 
     useEffect(() => {
@@ -50,16 +55,27 @@ const HomeScreen = () => {
                     <InputField placeholder="Search..." />
                 </Input>
                 <VStack>
-                    {products.map((product) => (
+                    {products.map((product, i) => (
                         <>
-                            <ProductCard 
-                                key={product.id}
-                                title={product.title}
-                                category={product.category}
-                                price={product.price}
-                                image={product.image}
-                                rating={product.rating}
-                            />
+                            <Pressable
+                                onPress={() => navigation.navigate('ProductDetail', { 
+                                    title: product.title,
+                                    category: product.category,
+                                    price: product.price,
+                                    image: product.image,
+                                    rating: product.rating,
+                                    description: product.description
+                                })}
+                            >
+                                <ProductCard 
+                                    key={`product-${i}`}
+                                    title={product.title}
+                                    category={product.category}
+                                    price={product.price}
+                                    image={product.image}
+                                    rating={product.rating}
+                                />
+                            </Pressable>
                             <Box 
                                 width="100%"
                                 height={1}
