@@ -14,7 +14,7 @@ const Router = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="ProductDetail" component={ProductDetail} options={{ title: 'Product Detail '}} />
+                <Stack.Screen name="ProductDetail" component={ProductDetail} options={{ title: 'Product Info '}} />
             </Stack.Navigator>
         </NavigationContainer>
     )

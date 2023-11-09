@@ -9,12 +9,15 @@ import {
     VStack,
     ScrollView,
     Box,
-    Pressable
+    Pressable,
+    useToast,
+    Text
 } from '@gluestack-ui/themed';
 
 import Container from '../../components/Container';
 import ProductCard from '../../components/Product';
 import LoadingScreen from '../LoadingScreen';
+import CustomToast from '../../components/CustomToast';
 
 import { capitalizeFirstLetter } from '../../helpers/text';
 
@@ -27,6 +30,7 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 const HomeScreen = ({navigation}: HomeScreenProps) => {
     const [products, setProducts] = useState<Array<Product>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const toast = useToast();
 
     useEffect(() => {
         getProducts();
@@ -41,11 +45,17 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         setTimeout(async () => {
             try {
                 const response = await axios.get('https://fakestoreapi.com/products');
+                // uncomment this and comment above to test the error toast
+                // const response = await axios.get('https://fakestoreapi.com/productsnotworking');
     
                 setProducts(response.data);
             } catch (error) {
-                console.log('error: ', error);
-                // Probably we should show an error message to the user
+                // dispatch error to sentry or something similar with the above passed error in the catch
+
+                toast.show({
+                    placement: "top",
+                    render: ({ id }) => <CustomToast id={id} />,
+                  })
             } finally {
                 setIsLoading(false);
             }
@@ -58,6 +68,14 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
 
     if (isLoading) {
         return <LoadingScreen />
+    }
+
+    if (products.length === 0) {
+        return (
+            <Container>
+                <Text>No products found...</Text>
+            </Container>
+        )
     }
 
     return (
