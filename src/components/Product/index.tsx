@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
     Text, 
     VStack, 
@@ -24,12 +24,11 @@ const ProductCard = ({
     image,
     rating
 }: ProductCardProps) => {
-    const [imageHeight, setImageHeight] = useState<number>(0);
-
     return (
         <HStack mb="$3">
             <Image 
                 source={{ uri: image }}
+                role="img"
                 alt={title}
                 width={100}
                 height={100}

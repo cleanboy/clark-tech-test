@@ -33,9 +33,10 @@ const ProductDetail = ({route}: ProductDetailScreenProps) => {
     return (
         <Container>
             <ScrollView>
-                <VStack alignItems='stretch'>
+                <VStack alignItems="stretch">
                     <Image 
                         source={{ uri: image }}
+                        role="img"
                         alt={title}
                         width={width}
                         height={height * 0.3}

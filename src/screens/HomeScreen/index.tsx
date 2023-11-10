@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import axios from 'axios';
 import { 
     Input, 
@@ -120,9 +120,8 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                         const category = capitalizeFirstLetter(product.category);
 
                         return (
-                            <>
+                            <Fragment key={`product-${i}`}>
                                 <Pressable
-                                    key={`product-${i}`}
                                     onPress={() => handleNavigateToProductDetail(product)}
                                 >
                                     <ProductCard 
@@ -139,7 +138,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                                     backgroundColor="#d4d4d4"
                                     mb="$3"
                                 />
-                            </> 
+                            </Fragment> 
                         )
                     })}
                 </VStack>
