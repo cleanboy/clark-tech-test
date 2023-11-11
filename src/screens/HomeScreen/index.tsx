@@ -19,6 +19,7 @@ import Container from '../../components/Container';
 import ProductCard from '../../components/Product';
 import LoadingScreen from '../LoadingScreen';
 import CustomToast from '../../components/CustomToast';
+import SearchInputProps from '../../components/SearchInput';
 
 import { capitalizeFirstLetter } from '../../helpers/text';
 
@@ -37,30 +38,27 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         getProducts();
     }, []);
 
-    const getProducts = () => {
+    const getProducts = async () => {
         // Normally I would most likely do this inside of a hook or an action if using redux 
         // and store it in state however I thought that was overkill for such a small app.
         setIsLoading(true);
 
-        // I am only putting the setTimout here to show the loading screen as the API responds fairly quickly...
-        setTimeout(async () => {
-            try {
-                const response = await axios.get('https://fakestoreapi.com/products');
-                // uncomment this and comment above to test the error toast
-                // const response = await axios.get('https://fakestoreapi.com/productsnotworking');
-    
-                setProducts(response.data);
-            } catch (error) {
-                // dispatch error to sentry or something similar with the above passed error in the catch
+        try {
+            const response = await axios.get('https://fakestoreapi.com/products');
+            // uncomment this and comment above to test the error toast
+            // const response = await axios.get('https://fakestoreapi.com/productsnotworking');
 
-                toast.show({
-                    placement: "top",
-                    render: ({ id }) => <CustomToast id={id} />,
-                  })
-            } finally {
-                setIsLoading(false);
-            }
-        }, 2000);
+            setProducts(response.data);
+        } catch (error) {
+            // dispatch error to sentry or some similar logging method with the above passed error in the catch
+
+            toast.show({
+                placement: "top",
+                render: ({ id }) => <CustomToast id={id} />,
+                })
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const handleNavigateToProductDetail = (product: Product) => {
@@ -70,6 +68,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
     const handleproductSearch = (searchTerm: string) => {
         if (searchTerm === '') {
             getProducts();
+            return;
         } 
 
         const filteredProducts = products.filter((product) => {
@@ -83,14 +82,6 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         return <LoadingScreen />
     }
 
-    if (products.length === 0) {
-        return (
-            <Container>
-                <Text>No products found...</Text>
-            </Container>
-        )
-    }
-
     return (
         <Container>
             <ScrollView
@@ -101,21 +92,13 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                         onRefresh={getProducts} 
                     />
                 }
+                testID='home-screen-scrollview'
             >
-                <Input 
-                    variant="rounded"
-                    size="md"
-                    mb="$4"
-                >
-                    <InputSlot>
-                        <InputIcon as={SearchIcon} color="#aaa" size="md" marginLeft={16} />
-                    </InputSlot>
-                    <InputField 
-                        onChangeText={handleproductSearch}
-                        placeholder="Search..." 
-                    />
-                </Input>
-                <VStack>
+                <SearchInputProps onChange={handleproductSearch} />
+                {products.length === 0 ? (
+                    <Text>No products found...</Text>
+                ) : (
+                    <VStack>
                     {products.map((product, i) => {
                         const category = capitalizeFirstLetter(product.category);
 
@@ -130,6 +113,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                                         price={product.price}
                                         image={product.image}
                                         rating={product.rating}
+                                        testID={`product-${i}`}
                                     />
                                 </Pressable>
                                 <Box 
@@ -142,6 +126,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                         )
                     })}
                 </VStack>
+                )}
             </ScrollView>
         </Container>
     );

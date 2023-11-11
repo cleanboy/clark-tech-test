@@ -15,6 +15,7 @@ type ProductCardProps = {
         rate: number;
         count: number;
     };
+    testID?: string;
 };
 
 const ProductCard = ({
@@ -35,6 +36,7 @@ const ProductCard = ({
                 mr={16}
                 flex={1}
                 resizeMode="contain"
+                testID='product-image'
             />
             <VStack flex={2}>
                 <Text size="lg" bold>{title}</Text>
