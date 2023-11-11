@@ -229,6 +229,20 @@ describe('HomeScreen', () => {
         });
     });
 
+    test('it should show no products found when no products are found', async () => {
+        axiosMock.onGet('https://fakestoreapi.com/products').reply(200, []);
+
+        render(
+            <GluestackProvider>
+                <Router />
+            </GluestackProvider>
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('No products found...')).toBeDefined();
+        });
+    });
+
     test('it should show loading screen when loading', async () => {
         axiosMock.onGet('https://fakestoreapi.com/products').reply(200, responseData);
 
