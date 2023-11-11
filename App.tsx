@@ -1,3 +1,5 @@
+import React from 'react';
+
 import GluestackProvider from './src/hoc/GluestackProvider';
 import Router from './src/screens/Router';
 
