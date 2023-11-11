@@ -7,7 +7,10 @@ const LoadingScreen = () => {
     return (
         <Container>
             <Spinner size="large" color="#0c40fa" />
-            <Text>Loading...</Text>
+            <Text 
+                textAlign="center"
+                mt={3}    
+            >Loading...</Text>
         </Container>
     )
 }
